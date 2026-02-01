@@ -48,13 +48,19 @@
 # Disable directory listing
 Options -Indexes
 
-# Security Headers
+# Security Headers (Allow search engines to read metadata)
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set X-XSS-Protection "1; mode=block"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  
+  # Allow search engine crawlers full access
+  Header set Access-Control-Allow-Origin "*"
+  
+  # Content Security Policy (permissive for search engines)
+  Header set Content-Security-Policy "default-src 'self' https:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com"
 </IfModule>
 
 # Redirect www to non-www (optional - adjust as needed)
